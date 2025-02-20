@@ -22,7 +22,6 @@ class BadgeuseApp:
         self.name_save = None
         self.setup_ui()
         self.check_reader_status()
-        self.load_all_students()
 
     def setup_ui(self):
         self.status_frame = tk.Frame(self.root)
@@ -92,14 +91,12 @@ class BadgeuseApp:
             except Exception as e:
                 messagebox.showerror("Erreur", f"Impossible de lire le fichier : {e}")
         else:
-            messagebox.showinfo("Info", "Aucun fichier sélectionné.")
+            return
 
         self.student_dict = student_data
         self.tree.delete(*self.tree.get_children())
-        self.load_all_students()
-
-    def load_all_students(self):
-        for uid, name in self.student_dict.items():
+        sorted_students = sorted(self.student_dict.items(), key=lambda x: x[1])
+        for uid, name in sorted_students:
             statut = "Absent"
             self.tree.insert("", tk.END, values=(uid, name, statut))
 
